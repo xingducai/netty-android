@@ -25,7 +25,6 @@ public class Constant {
      * 移动客户端码
      */
     public static final int port = 10910; //端口
-    public static final String host = "heartbeat.xinxindong.com"; //登陆
     public static final String daily = "120.24.248.171"; //登陆
 
 }

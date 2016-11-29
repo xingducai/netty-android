@@ -100,7 +100,10 @@ cwallet.sso.lck
 
 .svn
 .git/
-
+target/classes
+target/generated-sources
+target/generated-test-sources
+target/test-classes
 !.gitignore
 .idea/
 *iml
