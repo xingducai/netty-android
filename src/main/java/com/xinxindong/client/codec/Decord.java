@@ -24,7 +24,6 @@ public class Decord extends ByteToMessageDecoder {
         try {
 
             int data = in.readableBytes();
-            System.out.println(data);
             if (data < HEAD_LENGTH) {  //这个HEAD_LENGTH是我们用于表示头长度的字节数。  由于上面我们传的是一个int类型的值，所以这里HEAD_LENGTH的值为4.
                 return;
             }
