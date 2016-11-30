@@ -18,6 +18,24 @@ public class LogoutHandler extends ChannelHandlerAdapter {
         this.callback = callback;
     }
 
+    private static boolean isLogout = false; //是否异地登陆
+
+    /**
+     * 是否异地登陆
+     *
+     * @return
+     */
+    public static boolean isLogout() {
+        return isLogout;
+    }
+
+    /**
+     * 处理异地登陆
+     *
+     * @param ctx
+     * @param msg
+     * @throws Exception
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         JSONObject nettyMsg = (JSONObject) msg;
@@ -25,6 +43,8 @@ public class LogoutHandler extends ChannelHandlerAdapter {
 
             int type = nettyMsg.getIntValue("type");
             if (type == Constant.LOGOUT) {  //用户异地登陆，关闭相关操作
+                ctx.close();
+                isLogout = true;
                 if (callback != null)
                     callback.accept(msg);
 
