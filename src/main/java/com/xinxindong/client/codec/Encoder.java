@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
+ * 消息头消息头- 编码器
+ * <p>
  * Created by xingdu on 2016/9/24.
  */
 public class Encoder extends MessageToByteEncoder<Object> {

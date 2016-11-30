@@ -11,6 +11,8 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import java.util.List;
 
 /**
+ *
+ * 消息头消息头- 解码器
  * Created by xingdu on 2016/9/24.
  */
 public class Decord extends ByteToMessageDecoder {
