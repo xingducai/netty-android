@@ -2,7 +2,10 @@ package com.xinxindong;
 
 import com.xinxindong.client.NettyClient;
 import com.xinxindong.client.NettyClientFactory;
+import com.xinxindong.client.NettyMsg;
 import com.xinxindong.client.util.Constant;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by xingdu on 2016/9/24.
@@ -21,6 +24,15 @@ public class Client1 {
         }).bind(host, port).start();
 
         //android客户端写入数据到服务端
-        NettyClient.writeAndFlush(null);
+        while (true) {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+                netClient.writeAndFlush(NettyMsg.create(",,,")
+                        .type(Constant.PUSH)
+                        .reply(NettyMsg.Reply.YES));
+            } catch (Exception e) {
+
+            }
+        }
     }
 }
