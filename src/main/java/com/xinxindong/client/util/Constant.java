@@ -21,10 +21,6 @@ public class Constant {
 
 
     public static final int CLIENT_CLOSE_CHANNEL = -10; //移动客服的关闭长连接
-    /**
-     * 移动客户端码
-     */
-    public static final int port = 10910; //端口
-    public static final String daily = "120.24.248.171"; //登陆
+
 
 }

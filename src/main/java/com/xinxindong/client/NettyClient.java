@@ -2,7 +2,7 @@ package com.xinxindong.client;
 
 import com.xinxindong.client.codec.Decord;
 import com.xinxindong.client.codec.Encoder;
-import com.xinxindong.client.util.Constant;
+import com.xinxindong.client.util.CommonConfig;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -91,23 +91,23 @@ public class NettyClient {
 
 
             EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
-            Bootstrap bootstrap = new Bootstrap();
-            bootstrap.channel(NioSocketChannel.class);
-            bootstrap.option(ChannelOption.SO_KEEPALIVE, false);
-            bootstrap.group(eventLoopGroup);
-            bootstrap.remoteAddress(host, Constant.port);
-            bootstrap.handler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                protected void initChannel(SocketChannel socketChannel) throws Exception {
-                    socketChannel.pipeline().addLast(new IdleStateHandler(20, 10, 0));
-                    socketChannel.pipeline().addLast(new Encoder());
-                    socketChannel.pipeline().addLast(new Decord());
-                    socketChannel.pipeline().addLast(new LoginAuthReqHandler(alias, callback));
-                    socketChannel.pipeline().addLast(new HeartbeatReqHandler(callback));
-                    socketChannel.pipeline().addLast(new ClientHandler(callback));
+            Bootstrap bootstrap = new Bootstrap()
+                    .channel(NioSocketChannel.class)
+                    .option(ChannelOption.SO_KEEPALIVE, false)
+                    .group(eventLoopGroup)
+                    .remoteAddress(host, port)
+                    .handler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            socketChannel.pipeline().addLast(new IdleStateHandler(20, 10, 0));
+                            socketChannel.pipeline().addLast(new Encoder());
+                            socketChannel.pipeline().addLast(new Decord());
+                            socketChannel.pipeline().addLast(new LoginAuthReqHandler(alias, callback));
+                            socketChannel.pipeline().addLast(new HeartbeatReqHandler(callback));
+                            socketChannel.pipeline().addLast(new ClientHandler(callback));
 
-                }
-            });
+                        }
+                    });
 
             ChannelFuture future = bootstrap.connect(host, port).sync();
             if (future.isSuccess()) {
@@ -128,9 +128,9 @@ public class NettyClient {
 
         scheduledExecutorService.execute(() -> {
             try {
-                System.out.println("sleep 5 s,try reconnect server");
+                System.out.println("sleep " + CommonConfig.reconnect_retry_time_sleep_sec + "s,try reconnect server");
                 NettyClientFactory.build(alias, callback).bind(host, port).start();
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(CommonConfig.reconnect_retry_time_sleep_sec);
             } catch (Exception e1) {
             }
         });

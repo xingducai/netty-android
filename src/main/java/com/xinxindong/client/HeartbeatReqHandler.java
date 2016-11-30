@@ -2,6 +2,7 @@ package com.xinxindong.client;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xinxindong.client.util.Codes;
+import com.xinxindong.client.util.CommonConfig;
 import com.xinxindong.client.util.Constant;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
- *
  * 登陆成功后，定时发送心跳
  * Created by xingdu on 2016/9/24.
  */
@@ -65,7 +65,7 @@ public class HeartbeatReqHandler extends ChannelHandlerAdapter {
                     NettyMsg heart = new NettyMsg();
                     heart.setType(Constant.PING);
                     ctx.writeAndFlush(heart);
-                }, 0, 10, TimeUnit.SECONDS);
+                }, 0, CommonConfig.heartbeat_period_time, TimeUnit.SECONDS);
             } else
                 ctx.fireChannelRead(msg);
         } else
