@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
+ *
+ * 登陆成功后，定时发送心跳
  * Created by xingdu on 2016/9/24.
  */
 public class HeartbeatReqHandler extends ChannelHandlerAdapter {

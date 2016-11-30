@@ -3,6 +3,8 @@ package com.xinxindong.client;
 import java.util.function.Consumer;
 
 /**
+ *
+ * 构建nettyClient factory
  * Created by xingdu on 2016/9/24.
  */
 public class NettyClientFactory {

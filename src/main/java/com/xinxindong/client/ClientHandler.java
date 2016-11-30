@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandlerContext;
 import java.util.function.Consumer;
 
 /**
+ * 捕获client 事件
  * Created by xingdu on 2016/9/24.
  */
 public class ClientHandler extends ChannelHandlerAdapter {
@@ -27,27 +28,20 @@ public class ClientHandler extends ChannelHandlerAdapter {
         JSONObject nettyMsg = (JSONObject) msg;
         if (nettyMsg != null) {
             int type = nettyMsg.getIntValue("type");
-            int reply = nettyMsg.getIntValue("reply");
-
-
             boolean call = true;
             switch (type) {
 
                 case Constant.PING:
-                    call = false;
+                    call = false;  //不需要回调客户端
                     break;
                 case Constant.ACK:
                     break;
                 case Constant.REPLY:
-//                    ReplyHandler.handle(ctx, nettyMsg);
                     break;
                 case Constant.ASK:
-//                    AskReqHandler.handle(ctx, nettyMsg, callback);
-
                     break;
                 case Constant.LOGOUT:
                     LogoutHandler.handle(ctx, nettyMsg, callback);
-                    call = false;
                     break;
 
             }

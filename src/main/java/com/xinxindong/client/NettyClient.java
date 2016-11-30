@@ -24,21 +24,20 @@ import java.util.function.Consumer;
  * Created by xingdu on 2016/9/24.
  */
 public class NettyClient {
-    private int port; //服务端端口
-    private String host; //服务端ip或者域名不需要http://
+    private static int port; //服务端端口
+    private static String host; //服务端ip或者域名不需要http://
     private static SocketChannel socketChannel; //留给客户端操作的写通道
-    private String alias; //登陆绑定别名
+    private static String alias; //登陆绑定别名
     private static final EventExecutorGroup group = new DefaultEventExecutorGroup(20);
-
     public static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
-    private Consumer callback;
+    private static Consumer callback;
 
     private NettyClient() {
     }
 
     /**
-     * 客户端想服务端写数据接口
+     * 客户端向服务端写数据接口
      *
      * @param msg
      */
@@ -63,12 +62,25 @@ public class NettyClient {
         return client;
     }
 
+    /**
+     * 绑定host ，port
+     *
+     * @param host
+     * @param port
+     * @return
+     */
     public NettyClient bind(String host, int port) {
         this.host = host;
         this.port = port;
         return this;
     }
 
+    /**
+     * 启动netty client
+     *
+     * @return
+     * @throws InterruptedException
+     */
     public NettyClient start() throws InterruptedException {
         start_();
         return this;
@@ -102,22 +114,24 @@ public class NettyClient {
                 socketChannel = (SocketChannel) future.channel();
                 System.out.println("-----connect server  success---------");
             }
-            future.channel().closeFuture().sync();
+//            future.channel().closeFuture().sync();
         } catch (Exception e) {
-            reconnect(alias, callback);
+            reconnect();
         }
     }
 
 
-    public static void reconnect(String alias, Consumer callback) {
+    /**
+     * 端口重新连接
+     */
+    public static void reconnect() {
 
         scheduledExecutorService.execute(() -> {
             try {
                 System.out.println("sleep 5 s,try reconnect server");
-                TimeUnit.SECONDS.sleep(5);
-                NettyClientFactory.build(alias, callback);
+                NettyClientFactory.build(alias, callback).bind(host, port).start();
+                TimeUnit.SECONDS.sleep(3);
             } catch (Exception e1) {
-                reconnect(alias, callback);
             }
         });
     }

@@ -11,6 +11,7 @@ import java.util.function.Consumer;
  */
 public class LoginAuthReqHandler extends ChannelHandlerAdapter {
 
+
     private String alias;
     private Consumer callback;
 
@@ -34,6 +35,7 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         ctx.fireChannelRead(msg);
+
     }
 
     @Override
@@ -44,6 +46,7 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
 
     /**
      * 移动客户端可以选择在此处建立重连接
+     * 如果是异地登陆，禁止重新连接
      *
      * @param ctx
      * @throws Exception
@@ -51,7 +54,8 @@ public class LoginAuthReqHandler extends ChannelHandlerAdapter {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
-        NettyClient.reconnect(alias, callback);
+        if (!LogoutHandler.isLogout()) //异地登陆禁止重新连接
+            NettyClient.reconnect();
     }
 
 
