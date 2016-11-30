@@ -58,6 +58,11 @@ public class NettyMsg implements Serializable {
         this.reply = reply;
     }
 
+    public NettyMsg reply(byte reply) {
+        this.reply = reply;
+        return this;
+    }
+
 
     public String getTitle() {
         return title;
