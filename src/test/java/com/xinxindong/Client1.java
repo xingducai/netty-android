@@ -28,7 +28,7 @@ public class Client1 {
         while (true) {
             try {
                 TimeUnit.SECONDS.sleep(1);
-                netClient.writeAndFlush(NettyMsg.create(",,,")
+                netClient.writeAndFlush(NettyMsg.create("c59b51b2ca114782b1f2f11daa2dcd50")
                         .type(Constant.PUSH)
                         .reply(NettyMsg.Reply.YES));
             } catch (Exception e) {
